@@ -1,0 +1,56 @@
+﻿@page
+@using Convert.Express.Pages;
+@model UrlModel
+@{
+    ViewData["Title"] = "Url";
+    ViewData["active-link"] = "Url";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="ui breadcrumb">
+    <a class="section" href="/">Home</a>
+    <span class="divider">/</span>
+    <a class="section" href="#">URL</a>
+</div>
+
+<h1 class="">URL encode and decode</h1>
+
+<form method="POST" action="~/Url" class="ui form" role="form">
+    @Html.AntiForgeryToken()
+    <div class="inline fields">
+        <div class="field">
+            <label>Encode:</label>
+            <textarea name="encode" rows="3" required>@ViewData["Encode"]</textarea>
+        </div>
+
+        <div class="field">
+            <label>Result:</label>
+            <textarea rows="3">@ViewData["Encoded"]</textarea>
+        </div>
+    </div>
+    <div class="field">
+        <input type="submit" class="ui button" value="Convert!" />
+    </div>
+</form>
+
+
+<div class="top-buffer">
+    <form method="POST" action="~/Url" class="ui form" role="form">
+        @Html.AntiForgeryToken()
+        <div class="inline fields">
+            <div class="field">
+                <label>Decode:</label>
+                <textarea name="decode" rows="3" required>@ViewData["Decode"]</textarea>
+            </div>
+
+            <div class="field">
+                <label>Result:</label>
+                <textarea rows="3">@ViewData["Decoded"]</textarea>
+            </div>
+        </div>
+
+        <div class="field">
+            <input type="submit" class="ui button" value="Convert!" />
+        </div>
+    </form>
+</div>

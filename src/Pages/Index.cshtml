@@ -1,0 +1,50 @@
+﻿@page
+@using Convert.Express.Pages
+@model IndexModel
+@{
+    ViewData["Title"] = "Convert.Express";
+    ViewData["active-link"] = "Home";
+    Layout = "_Layout";
+}
+
+<div class="search-contariner ">
+    <div class="row">
+        <form method="get" action="/" id="convert" class="">
+            @Html.AntiForgeryToken()
+            <div class="ui fluid action input">
+                <input type="text" placeholder="Search..." type="text" name="q" id="Query" required="required" value="@Html.DisplayFor(model => model.InputConvertExpress.Querystring)">
+                <button class="ui button" type="submit">GO!</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="row" id="data">
+        @*<hr />*@
+        
+        @if (Model != null && Model.Result.Any())
+        {
+                
+            <h2 class="result-heading">Results:</h2>
+
+            <div class="ui list">
+                   
+                @foreach (var result in Model.Result)
+                {
+                    <div class="item">
+                        <i class="right triangle icon"></i>
+                        <div class="content">
+                            <div class="header">@result.Header</div>
+                            <div class="description">@result.Description</div>
+                        </div>
+                               
+                    </div>
+                            
+                }
+
+            </div>
+                
+        }
+
+    </div>
+</div>
+

@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    <meta name="keywords" content="convert,base64,convertion,express,online,fast,simple,encode,decode,url,html,code">
+    <meta name="description" content="A simlple, fast and easy convertion site! Encodes and decodes Base64, URL and HTML code.">
+    
+    <link rel="stylesheet" type="text/css" href="~/lib/semantic/semantic.min.css">
+ 
+</head>
+<body>
+
+    @await Html.PartialAsync("_Menu")
+    <div class="container body-content">
+        @RenderBody()
+        
+        <footer class="footer">
+            <hr />
+            <p>&copy; @DateTime.Now.Year </p>
+        </footer>
+    </div>
+    
+<script
+    src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"></script>
+<script src="~/lib/semantic/semantic.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-79742045-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+</body>
+</html>
