@@ -6,12 +6,6 @@ namespace Convert.Express.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly DataAccess _db;
-
-        public IndexModel(DataAccess db)
-        {
-            _db = db;
-        }
 
         public void OnGet(string q)
         {
