@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Convert.Express.Converters;
 using Convert.Express.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -11,16 +12,13 @@ namespace Convert.Express.Pages
         {
             if (!string.IsNullOrEmpty(q))
             {
-                var converter = new Converter();
-
-                InputConvertExpress.Querystring = q;
+                var converter = new SmartConverter();
+                Query= q;
                 Result = converter.Convert(q);
-
             }
-
         }
 
-        public InputConvertExpress InputConvertExpress => new InputConvertExpress();
+        public string Query;
 
         public List<Result> Result = new List<Result>();
     }
