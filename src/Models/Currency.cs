@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Convert.Express.Models.CC
+namespace Convert.Express.Models
 {
     public class Currency
     {

@@ -1,4 +1,4 @@
-﻿namespace Convert.Express.Models.CC
+﻿namespace Convert.Express.Models
 {
     public class Rates
     {

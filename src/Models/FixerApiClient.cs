@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using Convert.Express.Interfaces;
 using Newtonsoft.Json;
 
-namespace Convert.Express.Models.CC
+namespace Convert.Express.Models
 {
-    internal class Client
+    internal class FixerApiClient : ICurrencyApiClient
     {
-
         private readonly Dictionary<string, Currency> _cache;
 
-        internal Client()
+        internal FixerApiClient()
         {
             if (_cache == null)
             {
@@ -19,7 +19,7 @@ namespace Convert.Express.Models.CC
             }
         }
 
-        internal Currency GetCurrency(string from, string to)
+        public Currency GetCurrency(string from, string to)
         {
             var apikey = Environment.GetEnvironmentVariable("fixer_apikey") ?? "";
             var url = $"https://data.fixer.io/api/latest?base={from}&symbols={to}&access_key={apikey}";
@@ -39,7 +39,7 @@ namespace Convert.Express.Models.CC
             {
                 var responsestring = new StreamReader(response.GetResponseStream()).ReadToEnd();
 
-                var currency = JsonConvert.DeserializeObject<global::Convert.Express.Models.CC.Currency>(responsestring);
+                var currency = JsonConvert.DeserializeObject<global::Convert.Express.Models.Currency>(responsestring);
 
                 _cache.Add(from+to, currency);
                 return currency;
