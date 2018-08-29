@@ -5,6 +5,8 @@
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
     <UserSecretsId>bf84006d-20a7-4d51-b6d1-6512105c94a3</UserSecretsId>
     <StartupObject></StartupObject>
+    <ApplicationInsightsResourceId>/subscriptions/94131b1e-2533-4204-aa0c-9fddddfd9046/resourcegroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/Convert.Express</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/94131b1e-2533-4204-aa0c-9fddddfd9046/resourcegroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/Convert.Express</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,8 +15,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 </Project>
