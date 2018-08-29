@@ -26,7 +26,7 @@ namespace Convert.Express.Pages
                 ViewData["Decode"] = content;
             }
         }
-
+        [ValidateAntiForgeryToken]
         public void OnPost(string encode, string decode)
         {
             if (!string.IsNullOrEmpty(encode))

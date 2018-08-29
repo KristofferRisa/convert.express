@@ -10,9 +10,8 @@
 <div class="search-contariner ">
     <div class="row">
         <form method="get" action="/" id="convert" class="">
-            @Html.AntiForgeryToken()
             <div class="ui fluid action input">
-                <input type="text" placeholder="Search..." type="text" name="q" id="Query" required="required" value="@Html.DisplayFor(model => model.Query)">
+                <input type="text" placeholder="Search..." name="q" id="Query" required="required" value="@Html.DisplayFor(model => model.Query)">
                 <button class="ui button" type="submit">GO!</button>
             </div>
         </form>
