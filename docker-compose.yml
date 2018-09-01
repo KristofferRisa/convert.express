@@ -4,5 +4,5 @@ services:
   convert.express:
     image: kristofferrisa/convert.express
     build:
-      context: .
-      dockerfile: src/Dockerfile
+      context: src
+      dockerfile: Dockerfile
