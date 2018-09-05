@@ -4,7 +4,7 @@ WORKDIR /app
 ENV ASPNETCORE_URLS http://+:5005
 EXPOSE 5005
 
-FROM microsoft/dotnet:2.1-sdk AS build
+FROM microsoft/dotnet:2.1-sdk-alpine AS build
 WORKDIR /src
 COPY Convert.Express.csproj .
 RUN dotnet restore Convert.Express.csproj
