@@ -47,41 +47,37 @@ namespace Convert.Express.Api
                         to = input_split[2].ToUpper();
                     }
                     var amount = System.Convert.ToDecimal(input_split[0]);
-                    return (ActionResult)new OkObjectResult($"{GetCurrencyAmount(amount,from,to)} {to.ToUpper()}");
+                    var convertedAmount = FixerApiClient.GetCurrency(from, to,amount.ToString(),log);
+                    return (ActionResult)new OkObjectResult($"{convertedAmount} {to}");
                 }
             }
 
             return new BadRequestObjectResult("Please pass a name on the query string or in the request body");;
         }
 
-        public static decimal GetCurrencyAmount(decimal amount, string from, string to)
-        {
-            var _client = new FixerApiClient();
-            return Math.Round(amount * _client.GetCurrency(from, to).GetRate(to), 2);
-        }
-
         private static List<string> GetregExs() => new List<string>(){
-                @"(\d+(\.\d{1,2})?)?\s([A-Za-z]{3})\s([i][n])\s([A-Za-z]{3})", // 10 usd in nok
-                @"(\d+(\.\d{1,2})?)?\s([A-Za-z]{3})\s([t][o])\s([A-Za-z]{3})", // 10 usd to nok
-                @"(\d+(\.\d{1,2})?)?\s([A-Za-z]{3})\s([a][s])\s([A-Za-z]{3})", // 10 usd as nok    
+                @"(\d+(\.\d{1,2})?)?\s([A-Za-z]{3})\s([Ii][nn])\s([A-Za-z]{3})", // 10 usd in nok
+                @"(\d+(\.\d{1,2})?)?\s([A-Za-z]{3})\s([tt][Oo])\s([A-Za-z]{3})", // 10 usd to nok
+                @"(\d+(\.\d{1,2})?)?\s([A-Za-z]{3})\s([Aa][Ss])\s([A-Za-z]{3})", // 10 usd as nok    
                 @"^(\d+(\.\d{1,2})?)?\s([A-Za-z]{3})\s([A-Za-z]{3})$", //10 usd nok
                 @"^(\d+(\.\d{1,2})?)?\s([A-Za-z]{3})$", // 10 usd
             };
     }
-    internal class FixerApiClient
+    public static class FixerApiClient
     {
         private readonly static Dictionary<string, Currency> _cache = new Dictionary<string, Currency>();
 
-        public Currency GetCurrency(string from, string to)
+        public static double GetCurrency(string from, string to, string amount,ILogger log)
         {
             var apikey = Environment.GetEnvironmentVariable("fixer_apikey") ?? "d3a1aabce92c079871e0a8ec02b3b824";
-            var url = $"https://data.fixer.io/api/latest?base={from}&symbols={to}&access_key={apikey}";
+            var url = $"https://data.fixer.io/api/convert?from={from}&to={to}&amount={amount}&access_key={apikey}";
 
-            if (_cache.ContainsKey(from+to))
+            if (_cache.ContainsKey(from+to+amount))
             {
-                if (System.Convert.ToDateTime(_cache[from+to].date) == DateTime.Today)
+                if (System.Convert.ToDateTime(_cache[from+to+amount].Date) == DateTime.Today)
                 {
-                    return _cache[from+to];
+                    log.LogInformation("Found query in cache, returning cached data.");
+                    return _cache[from+to+amount].Result;
                 }
             }
 
@@ -94,94 +90,50 @@ namespace Convert.Express.Api
 
                 var currency = JsonConvert.DeserializeObject<Currency>(responsestring);
 
-                _cache.Add(from+to, currency);
-                return currency;
+                _cache.Add(from+to+amount, currency);
+                return currency.Result;
             }
         }
     }
     public class Currency
     {
-        [JsonProperty]
-        public string @base { get; set; }
-        [JsonProperty]
-        public string date { get; set; }
-        [JsonProperty]
-        public Rates rates { get; set; }
+        [JsonProperty("success")]
+        public bool Success { get; set; }
 
-        public decimal GetRate(string currency)
-        {
-            return System.Convert.ToDecimal(this.rates.GetType().GetProperty(currency).GetValue(rates, null));
-        }
+        [JsonProperty("query")]
+        public Query Query { get; set; }
+
+        [JsonProperty("info")]
+        public Info Info { get; set; }
+
+        [JsonProperty("historical")]
+        public string Historical { get; set; }
+
+        [JsonProperty("date")]
+        public DateTime Date { get; set; }
+
+        [JsonProperty("result")]
+        public double Result { get; set; }
+        
     }
-    public class Rates
+    public partial class Info
     {
-        public float EUR { get; set; }
-        public float AUD { get; set; }
-        public float BGN { get; set; }
-        public float BRL { get; set; }
-        public float CAD { get; set; }
-        public float CHF { get; set; }
-        public float CNY { get; set; }
-        public float CZK { get; set; }
-        public float DKK { get; set; }
-        public float GBP { get; set; }
-        public float HKD { get; set; }
-        public float HRK { get; set; }
-        public float HUF { get; set; }
-        public float IDR { get; set; }
-        public float ILS { get; set; }
-        public float INR { get; set; }
-        public float JPY { get; set; }
-        public float KRW { get; set; }
-        public float MXN { get; set; }
-        public float MYR { get; set; }
-        public float NOK { get; set; }
-        public float NZD { get; set; }
-        public float PHP { get; set; }
-        public float PLN { get; set; }
-        public float RON { get; set; }
-        public float RUB { get; set; }
-        public float SEK { get; set; }
-        public float SGD { get; set; }
-        public float THB { get; set; }
-        public float TRY { get; set; }
-        public float USD { get; set; }
-        public float ZAR { get; set; }
+        [JsonProperty("timestamp")]
+        public long Timestamp { get; set; }
+
+        [JsonProperty("rate")]
+        public double Rate { get; set; }
     }
-    public enum RateList
+    public partial class Query
     {
-        EUR,
-        AUD,
-        BGN,
-        BRL,
-        CAD,
-        CHF,
-        CNY,
-        CZK,
-        DKK,
-        GBP,
-        HKD,
-        HRK,
-        HUF,
-        IDR,
-        ILS,
-        INR,
-        JPY,
-        KRW,
-        MXN,
-        MYR,
-        NOK,
-        NZD,
-        PHP,
-        PLN,
-        RON,
-        RUB,
-        SEK,
-        SGD,
-        THB,
-        TRY,
-        USD,
-        ZAR,
+        [JsonProperty("from")]
+        public string From { get; set; }
+
+        [JsonProperty("to")]
+        public string To { get; set; }
+
+        [JsonProperty("amount")]
+        public long Amount { get; set; }
     }
 
 }
