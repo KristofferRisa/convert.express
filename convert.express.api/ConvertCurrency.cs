@@ -29,41 +29,26 @@ namespace Convert.Express.Api
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             input = input ?? data?.input;
-
-            var regExs = new List<string>(){
-                @"(\d+(\.\d{1,2})?)?\s([A-Za-z]{3})\s([i][n])\s([A-Za-z]{3})", // 10 usd in nok
-                @"(\d+(\.\d{1,2})?)?\s([A-Za-z]{3})\s([t][o])\s([A-Za-z]{3})", // 10 usd to nok
-                @"(\d+(\.\d{1,2})?)?\s([A-Za-z]{3})\s([a][s])\s([A-Za-z]{3})", // 10 usd as nok    
-            };
             
             //From and to converstion
-            foreach (var regex in regExs)
+            foreach (var regex in GetregExs())
             {
                 if (Regex.IsMatch(input, regex))
                 {
-                    var from = input.Split(' ')[1].ToUpper();
-                    var to = input.Split(' ')[3].ToUpper();
-                    var amount = System.Convert.ToDecimal(input.Split(' ')[0]);
+                    var input_split = input.Split(' ');
+                    var from = input_split[1].ToUpper();
+                    var to = _localIsoSymbol;
+                    if(input_split.Length > 3 )
+                    {
+                        to = input_split[3].ToUpper();
+                    }
+                    else if(input_split.Length > 2)
+                    {
+                        to = input_split[2].ToUpper();
+                    }
+                    var amount = System.Convert.ToDecimal(input_split[0]);
                     return (ActionResult)new OkObjectResult($"{GetCurrencyAmount(amount,from,to)} {to.ToUpper()}");
                 }
-            }
-
-            //From and to without spesification
-            if (Regex.IsMatch(input, @"^(\d+(\.\d{1,2})?)?\s([A-Za-z]{3})\s([A-Za-z]{3})$")) //10 usd nok
-            {
-                var from = input.Split(' ')[1].ToUpper();
-                var to = input.Split(' ')[2].ToUpper();
-                var amount = System.Convert.ToDecimal(input.Split(' ')[0]);
-                return (ActionResult)new OkObjectResult($"{GetCurrencyAmount(amount, from, to)} {to.ToUpper()}");
-            }
-
-            //Singel from convert
-            if (Regex.IsMatch(input, @"^(\d+(\.\d{1,2})?)?\s([A-Za-z]{3})$")) //10 usd
-            {
-                var from = input.Split(' ')[1].ToUpper();
-                var to = _localIsoSymbol;
-                var amount = System.Convert.ToDecimal(input.Split(' ')[0]);
-                return (ActionResult)new OkObjectResult($"{GetCurrencyAmount(amount, from, to)} {to.ToUpper()}");
             }
 
             return new BadRequestObjectResult("Please pass a name on the query string or in the request body");;
@@ -74,6 +59,14 @@ namespace Convert.Express.Api
             var _client = new FixerApiClient();
             return Math.Round(amount * _client.GetCurrency(from, to).GetRate(to), 2);
         }
+
+        private static List<string> GetregExs() => new List<string>(){
+                @"(\d+(\.\d{1,2})?)?\s([A-Za-z]{3})\s([i][n])\s([A-Za-z]{3})", // 10 usd in nok
+                @"(\d+(\.\d{1,2})?)?\s([A-Za-z]{3})\s([t][o])\s([A-Za-z]{3})", // 10 usd to nok
+                @"(\d+(\.\d{1,2})?)?\s([A-Za-z]{3})\s([a][s])\s([A-Za-z]{3})", // 10 usd as nok    
+                @"^(\d+(\.\d{1,2})?)?\s([A-Za-z]{3})\s([A-Za-z]{3})$", //10 usd nok
+                @"^(\d+(\.\d{1,2})?)?\s([A-Za-z]{3})$", // 10 usd
+            };
     }
     internal class FixerApiClient
     {
