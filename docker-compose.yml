@@ -1,8 +1,0 @@
-version: '3.4'
-
-services:
-  convert.express:
-    image: kristofferrisa/convert.express
-    build:
-      context: src
-      dockerfile: Dockerfile
