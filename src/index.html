@@ -10,6 +10,8 @@
     <meta name="description" content="A simlple, fast and easy convertion site! Encodes and decodes Base64, URL and HTML code.">
     
     <link rel="stylesheet" type="text/css" href="~/css/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
 </head>
 <body>
 
@@ -27,7 +29,17 @@
 </header>
     <div class="container body-content">
         
-        
+        <div id="app">
+            {{ message }}
+        </div>
+
+        <div id="app-2">
+            <span v-bind:title="message">
+              Hover your mouse over me for a few seconds
+              to see my dynamically bound title!
+            </span>
+          </div>
+
         <footer class="footer">
             <hr />
             <p>&copy; 2018 </p>
@@ -56,6 +68,20 @@
     ga('create', 'UA-79742045-1', 'auto');
     ga('send', 'pageview');
 
+</script>
+<script>
+var app = new Vue({
+  el: '#app',
+  data: {
+    message: 'Hello Vue!'
+  }
+})
+var app2 = new Vue({
+  el: '#app-2',
+  data: {
+    message: 'You loaded this page on ' + new Date().toLocaleString()
+  }
+})
 </script>
 </body>
 </html>
