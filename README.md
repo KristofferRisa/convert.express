@@ -1,13 +1,21 @@
-# [convert.express](https://convert.express)
-A simlple, fast and easy convertion site! Encodes and decodes Base64, URL and HTML code bulid on vue.js framework as a completly static webpage hosted on azure.
+# convert.express
 
+> A simple and easy webpage for Base 64 and other conversions built with vue.js and hosted on azure.
 
-## Docker status
-[![Docker Automated build](https://img.shields.io/docker/automated/kristofferrisa/convert.express.svg?style=flat-square)](https://hub.docker.com/r/kristofferrisa/convert.express/) [![Docker Build Status](https://img.shields.io/docker/build/kristofferrisa/convert.express.svg?style=flat-square)](https://hub.docker.com/r/kristofferrisa/convert.express/) [![MicroBadger Size](https://img.shields.io/microbadger/image-size/kristofferrisa/convert.express.svg?style=flat-square)](https://hub.docker.com/r/kristofferrisa/convert.express/) 
-[![Docker Pulls](https://img.shields.io/docker/pulls/kristofferrisa/convert.express.svg?style=flat-square)](https://hub.docker.com/r/kristofferrisa/convert.express/)
+## Build Setup
 
+``` bash
+# install dependencies
+npm install
 
+# serve with hot reload at localhost:8080
+npm run dev
 
+# build for production with minification
+npm run build
 
+# build for production and view the bundle analyzer report
+npm run build --report
+```
 
-### Licenes MIT
+For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

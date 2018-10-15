@@ -1,7 +1,7 @@
 {
-  "name": "test-app2",
+  "name": "convert.express",
   "version": "1.0.0",
-  "description": "A Vue.js project",
+  "description": "A simple and easy webpage for Base 64 and other conversions built with vue.js and hosted on azure.",
   "author": "Kristoffer Risa <kristofferrisa@gmail.com>",
   "private": true,
   "scripts": {
