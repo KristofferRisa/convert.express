@@ -1,5 +1,10 @@
-# [convert.express](https://convert.express)
+# [convert.express](https://convert.express) (Projected is going to be archived)
 A simlple, fast and easy convertion site! Encodes and decodes Base64, URL and HTML code
+
+## Project status
+This project has been moved to a free [Azure website](https://convertexpress.azurewebsites.net) instance and is not going to be worked on anymore. I'm archiving the project because I need to focus on other projects and tasks. 
+
+This project has all the time been a simple web site for testing and learning new skills and technologies. 
 
 
 ## Docker status
