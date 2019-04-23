@@ -1,4 +1,4 @@
-# [convert.express](https://convert.express) (Projected is going to be archived)
+# [convert.express]
 A simlple, fast and easy convertion site! Encodes and decodes Base64, URL and HTML code
 
 ## Project status
