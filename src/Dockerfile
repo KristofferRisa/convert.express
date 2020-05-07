@@ -9,8 +9,8 @@ FROM build AS publish
 RUN dotnet publish Convert.Express.csproj -c Release -o /app
 
 FROM microsoft/dotnet:2.1-aspnetcore-runtime-alpine AS runtime
-ENV ASPNETCORE_URLS http://+:5005
-EXPOSE 5005
+ENV ASPNETCORE_URLS http://+:80
+EXPOSE 80
 
 WORKDIR /app
 COPY --from=publish /app .
