@@ -29,6 +29,7 @@ jobs:
       run: dotnet build --configuration Release
      
     - name: Publish with dotnet
+      working-directory: src
       run: dotnet publish --configuration Release 
      
     - name: Publish artifacts
