@@ -65,6 +65,6 @@ jobs:
           # show azure account being used
           az account show
           # az storage account upload
-          az storage blob upload-batch --account-name ${{ env.BLOB_STORAGE_ACCOUNT_NAME }} -s webapp -d \$web
+          az storage blob upload-batch --account-name ${{ env.BLOB_STORAGE_ACCOUNT_NAME }} -s src/bin/Release/netstandard2.1/publish/wwwroot -d \$web
           # az set content type of wasm file until this is fixed by default from Azure Storage
           az storage blob update --account-name ${{ env.BLOB_STORAGE_ACCOUNT_NAME }} -c \$web -n _framework/wasm/mono.wasm --content-type application/wasm
