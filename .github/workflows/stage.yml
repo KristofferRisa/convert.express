@@ -35,7 +35,7 @@ jobs:
     - name: Publish artifacts      
       uses: actions/upload-artifact@master
       with:
-        name: webapp
+        name: wwwroot
         path: src/bin/Release/netstandard2.1/publish/wwwroot
  
   deploy:
@@ -48,7 +48,7 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@master
       with:
-        name: webapp
+        name: wwwroot
  
     # Authentication
     - name: Authenticate with Azure
@@ -65,6 +65,6 @@ jobs:
           # show azure account being used
           az account show
           # az storage account upload
-          az storage blob upload-batch --account-name ${{ env.BLOB_STORAGE_ACCOUNT_NAME }} -s /home/runner/work/convert.express/convert.express -d \$web
+          az storage blob upload-batch --account-name ${{ env.BLOB_STORAGE_ACCOUNT_NAME }} -s wwwroot -d \$web
           # az set content type of wasm file until this is fixed by default from Azure Storage
           az storage blob update --account-name ${{ env.BLOB_STORAGE_ACCOUNT_NAME }} -c \$web -n _framework/wasm/mono.wasm --content-type application/wasm
