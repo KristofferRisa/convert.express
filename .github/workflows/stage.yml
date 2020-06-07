@@ -25,7 +25,6 @@ jobs:
         
  
     - name: Build with dotnet
-      working-directory: src
       run: dotnet build --configuration Release
      
     - name: Publish with dotnet
