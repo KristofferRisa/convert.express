@@ -20,9 +20,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.300
-        
-        
+        dotnet-version: 3.1.300        
  
     - name: Build with dotnet
       working-directory: src
@@ -49,6 +47,11 @@ jobs:
       uses: actions/download-artifact@master
       with:
         name: wwwroot
+        path: wwwroot
+        
+    - name: Display structure of downloaded files
+      run: ls -R
+      working-directory: wwwroot
  
     # Authentication
     - name: Authenticate with Azure
@@ -65,6 +68,6 @@ jobs:
           # show azure account being used
           az account show
           # az storage account upload
-          az storage blob upload-batch --account-name ${{ env.BLOB_STORAGE_ACCOUNT_NAME }} --source wwwroot --destination \$web
+          az storage blob upload-batch --account-name ${{ env.BLOB_STORAGE_ACCOUNT_NAME }} -s wwwroot -d \$web
           # az set content type of wasm file until this is fixed by default from Azure Storage
           az storage blob update --account-name ${{ env.BLOB_STORAGE_ACCOUNT_NAME }} -c \$web -n _framework/wasm/mono.wasm --content-type application/wasm
