@@ -1,0 +1,96 @@
+﻿<EditForm Model="@convertModel" OnSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <h3>Input:</h3>
+        <InputTextArea class="form-control"
+                       rows="3"
+                       @bind-Value="convertModel.InputValue" />
+    </div>
+    <div class="form-group">
+
+        <ul class="list-group" @onclick="toggleDecode">
+            <li class="list-group-item  list-group-item-action @((decode ? "active" : ""))">Decode</li>
+            <li class="list-group-item  list-group-item-action @((!decode ? "active" : ""))">Encode</li>
+        </ul>
+    </div>
+
+    <div class="form-group">
+        <div class="field">
+            <h3>Result:</h3>
+            <InputTextArea 
+                class="form-control"
+                readonly
+                @bind-Value="convertModel.OutputValue"
+                row="3" />
+        </div>
+
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary" type="submit">Convert</button>
+    </div>
+</EditForm>
+@code {
+    private ConvertModel convertModel = new ConvertModel();
+    private bool decode = true;
+    [Parameter]
+    public string Type { get; set; }
+
+
+    //private void Convert()
+    //{
+    //if (decode)
+    //{
+    //    outPutValue = System.Net.WebUtility.UrlDecode(inputValue); ;
+    //}
+    //else
+    //{
+    //    outPutValue = System.Net.WebUtility.UrlEncode(inputValue);
+    //}
+
+    private async Task HandleSubmit()
+    {
+        if (Type.ToUpper() == "URL")
+        {
+            if (decode)
+            {
+                convertModel.OutputValue = System.Net.WebUtility.UrlDecode(convertModel.InputValue);
+            }
+            else
+            {
+                convertModel.OutputValue = System.Net.WebUtility.UrlEncode(convertModel.InputValue);
+            }
+        }
+        else if(Type.ToUpper() == "BASE64")
+        {
+            if (decode)
+            {
+                convertModel.OutputValue = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(convertModel.InputValue));
+            }
+            else
+            {
+                convertModel.OutputValue = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(convertModel.InputValue));
+            }
+        }
+        else if(Type.ToUpper() == "HTML")
+        {
+            if (decode)
+            {
+                convertModel.OutputValue = System.Net.WebUtility.HtmlDecode(convertModel.InputValue);
+            }
+            else
+            {
+                convertModel.OutputValue = System.Net.WebUtility.HtmlEncode(convertModel.InputValue);
+            }
+        }
+    }
+
+    private void toggleDecode()
+    {
+        decode = !decode;
+    }
+    //outPutValue = (decode == false)
+    //    ? System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(inputValue))
+    //    : System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(inputValue));
+}
