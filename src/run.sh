@@ -1,0 +1,1 @@
+docker run -d --name convert.express registry.kristoffer.dev/convert.express:latest
