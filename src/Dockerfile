@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.1-sdk-alpine AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY Convert.Express.csproj .
 RUN dotnet restore Convert.Express.csproj
@@ -8,7 +8,7 @@ RUN dotnet build Convert.Express.csproj -c Release -o /app
 FROM build AS publish
 RUN dotnet publish Convert.Express.csproj -c Release -o /app
 
-FROM microsoft/dotnet:2.1-aspnetcore-runtime-alpine AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
 ENV ASPNETCORE_URLS http://+:80
 EXPOSE 80
 
