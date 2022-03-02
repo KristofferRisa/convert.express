@@ -1,3 +1,2 @@
-docker build -f ./Dockerfile . -t risait.azurecr.io/convert.express:latest
-docker push risait.azurecr.io/convert.express
-
+docker build -f ./Dockerfile . -t registry.kristoffer.dev/convert.express:latest
+docker push registry.kristoffer.dev/convert.express
